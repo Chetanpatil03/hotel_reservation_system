@@ -166,7 +166,7 @@ public class Main {
             int reservationID = sc.nextInt();
             sc.nextLine(); //consume new line character
 
-            if (!reservationExist(connection,sc)){
+            if (!reservationExist(connection,reservationID)){
                 System.out.println("Reservation not exist for given ID");
                 return;
             }
@@ -196,14 +196,56 @@ public class Main {
         }
 
     }
-    public static void deleteReservation(){
+    public static void deleteReservation(Connection connection, Scanner sc){
+        try {
+            System.out.print("Enter reservation ID to update : ");
+            int reservationID = sc.nextInt();
+            sc.nextLine(); //consume new line character
 
+            if (!reservationExist(connection,reservationID)){
+                System.out.println("Reservation not exist for given ID");
+                return;
+            }
+
+            String sql = "DELETE FROM reservation where res_id = '"+reservationID+"'";
+
+            try(Statement statement = connection.createStatement()){
+                int affectedRow = statement.executeUpdate(sql);
+                if (affectedRow > 0){
+                    System.out.println("Deletion of reservation successfully...");
+                }
+                else {
+                    System.out.println("Deletion of reservation is FAILED...");
+                }
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
     }
-    public static void exit(){
-
+    public static void exit() throws InterruptedException{
+        System.out.println("Exiting System ");
+        int i = 5;
+        while(i!= 0 ){
+            System.out.print(".");
+            Thread.sleep(450);
+            i--;
+        }
+        System.out.println();
     }
 
-    public static boolean reservationExist(Connection connection,Scanner sc){
-        return true;
+    public static boolean reservationExist(Connection connection,int reservationID){
+        String sql = "SELECT res_id from reservation";
+
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)){
+
+            return resultSet.next(); //if there is a result then reservation exists.
+
+        }
+        catch (SQLException e ){
+            e.printStackTrace();
+            return false;
+        }
     }
 }
