@@ -9,10 +9,13 @@ CREATE TABLE reservation (
     guest_name VARCHAR(255) NOT NULL,
     room_no INT NOT NULL,
     contact_no VARCHAR(12) NOT NULL,
-    resrvation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    reservation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 describe reservation;
+
+drop table reservation;
+
 
 
 
