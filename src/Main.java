@@ -46,13 +46,13 @@ public class Main {
                         viewReservation(connection);
                         break;
                     case 3 :
-                        getRoomNumber();
+                        getRoomNumber(connection,sc);
                         break;
                     case 4 :
-                        updateReservation();
+                        updateReservation(connection,sc);
                         break;
                     case 5 :
-                        deleteReservation();
+                        deleteReservation(connection,sc);
                         break;
                     default:
                         System.out.println("Invalid choice... Try again");
@@ -151,13 +151,49 @@ public class Main {
                 }
 
             }
-            catch (SQLException e){
-                e.printStackTrace();
-            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
         }
 
     }
-    public static void updateReservation(){
+
+
+    public static void updateReservation(Connection connection,Scanner sc){
+
+        try{
+            System.out.print("Enter reservation ID to update : ");
+            int reservationID = sc.nextInt();
+            sc.nextLine(); //consume new line character
+
+            if (!reservationExist(connection,sc)){
+                System.out.println("Reservation not exist for given ID");
+                return;
+            }
+
+            System.out.print("Enter new guest name : ");
+            String newGuestName = sc.nextLine();
+            System.out.print("Enter new room number : ");
+            int newRoomNum = sc.nextInt();
+            System.out.print("Enter new Contact number : ");
+            String newContactNo = sc.next();
+
+            String sql = "UPDATE reservation SET guest_name = '"+newGuestName+"' , " +
+                    "room_no = '"+newRoomNum+"' , contact_no = '"+newContactNo+"'" +
+                    "WHERE res_id = '"+reservationID+"'";
+
+            try (Statement statement = connection.createStatement()){
+                int affectedRow = statement.executeUpdate(sql);
+                if (affectedRow > 0){
+                    System.out.println("Reservation updated successfully...");
+                }
+                else {
+                    System.out.println("Reservation update FAILED..");
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
     public static void deleteReservation(){
@@ -165,5 +201,9 @@ public class Main {
     }
     public static void exit(){
 
+    }
+
+    public static boolean reservationExist(Connection connection,Scanner sc){
+        return true;
     }
 }
