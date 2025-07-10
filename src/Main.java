@@ -107,6 +107,7 @@ public class Main {
             System.out.println("+----------------+-----------------+---------------+----------------------+-------------------------+");
 
             while (resultSet.next()) {
+
                 int reservationId = resultSet.getInt("res_id");
                 String guestName = resultSet.getString("guest_name");
                 int roomNo = resultSet.getInt("room_no");
@@ -123,7 +124,37 @@ public class Main {
             e.printStackTrace();
         }
     }
-    public static void getRoomNumber(){
+    public static void getRoomNumber(Connection connection, Scanner sc){
+
+        try{
+            System.out.print("Enter reservation ID : ");
+            int reservationId = sc.nextInt();
+//            sc.nextLine();
+            System.out.println("Enter guest name : ");
+            String guestName = sc.next();
+
+            String sql = "SELECT room_no FROM reservation "+
+                    " WHERE res_id = "+reservationId+
+                    "AND guest_name = '"+guestName+"' ";
+
+            try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)){
+
+                if (resultSet.next()){
+                    int roomNo = resultSet.getInt("room_no");
+
+                    System.out.println("Room number for Reservation ID" +reservationId +
+                            " and Guest "+guestName+" is : "+roomNo);
+                }
+                else {
+                    System.out.println("Reservation Not found for given ID and Guest name");
+                }
+
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
     }
     public static void updateReservation(){
