@@ -37,8 +37,6 @@ public class Main {
                 int choice = sc.nextInt();
 
                 switch (choice){
-                    case 0 :
-                        exit();
                     case 1 :
                         reserveRoom(connection,sc);
                         break;
@@ -54,6 +52,10 @@ public class Main {
                     case 5 :
                         deleteReservation(connection,sc);
                         break;
+                    case 0 :
+                        exit();
+                        sc.close();
+                        return;
                     default:
                         System.out.println("Invalid choice... Try again");
 
@@ -124,6 +126,7 @@ public class Main {
             e.printStackTrace();
         }
     }
+
     public static void getRoomNumber(Connection connection, Scanner sc){
 
         try{
@@ -133,12 +136,11 @@ public class Main {
             System.out.println("Enter guest name : ");
             String guestName = sc.next();
 
-            String sql = "SELECT room_no FROM reservation "+
-                    " WHERE res_id = "+reservationId+
-                    "AND guest_name = '"+guestName+"' ";
+            String sql = "SELECT room_no FROM reservation WHERE res_id = "+reservationId +
+                    " AND guest_name = '"+guestName+"' ";
 
             try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)){
+            ResultSet resultSet = statement.executeQuery(sql) ){
 
                 if (resultSet.next()){
                     int roomNo = resultSet.getInt("room_no");
@@ -232,6 +234,7 @@ public class Main {
             i--;
         }
         System.out.println();
+        System.out.println("Thank you for using Hotel Reservation System.!!!");
     }
 
     public static boolean reservationExist(Connection connection,int reservationID){
