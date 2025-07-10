@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -34,14 +35,82 @@ public class Main {
                 System.out.println("3. Get Room number");
                 System.out.println("4. Update Reservations");
                 System.out.println("5. Delete Reservations");
-                System.out.println("6. EXIT");
+                System.out.println("0. EXIT");
                 System.out.print("\nEnter Choice : ");
                 int choice = sc.nextInt();
+
+                switch (choice){
+                    case 0 :
+                        exit();
+                    case 1 :
+                        reserveRoom(connection,sc);
+                        break;
+                    case 2 :
+                        viewReservation(connection,sc);
+                        break;
+                    case 3 :
+                        getRoomNumber();
+                        break;
+                    case 4 :
+                        updateReservation();
+                        break;
+                    case 5 :
+                        deleteReservation();
+                        break;
+                    default:
+                        System.out.println("Invalid choice... Try again");
+
+                }
 
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    public static void reserveRoom(Connection connection,Scanner sc){
+        System.out.print("Enter Guest name : ");
+        String guestName = sc.next();
+        sc.nextLine();
+        System.out.println("Enter Room number : ");
+        int roomNum = sc.nextInt();
+        System.out.println("Enter contact number : ");
+        String contactNumber = sc.next();
+
+        String sql = "INSERT INTO reservation(guest_name,room_no,contact_no) " +
+                "VALUES ('"+ guestName+"','"+roomNum+"','"+contactNumber+"') ";
+
+        try(Statement statement = connection.createStatement()){
+            int affectedRows = statement.executeUpdate(sql);
+            if (affectedRows > 0){
+                System.out.println("Reservation successful");
+            }
+            else {
+                System.out.println("Reservation failed");
+            }
+        }
+        catch (SQLException e){
+//            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+    public static void viewReservation(Connection connection, Scanner sc) throws SQLException{
+        
+    }
+    public static void getRoomNumber(){
+
+    }
+    public static void updateReservation(){
+
+    }
+    public static void deleteReservation(){
+
+    }
+    public static void exit(){
+
     }
 }
