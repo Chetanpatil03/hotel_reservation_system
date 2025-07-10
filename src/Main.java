@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -46,7 +43,7 @@ public class Main {
                         reserveRoom(connection,sc);
                         break;
                     case 2 :
-                        viewReservation(connection,sc);
+                        viewReservation(connection);
                         break;
                     case 3 :
                         getRoomNumber();
@@ -98,8 +95,33 @@ public class Main {
         }
 
     }
-    public static void viewReservation(Connection connection, Scanner sc) throws SQLException{
-        
+    public static void viewReservation(Connection connection) throws SQLException{
+        String sql = "SELECT res_id,guest_name,room_no,contact_no,reservation_date FROM reservation";
+
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)) {
+
+            System.out.println("Current Reservations:");
+            System.out.println("+----------------+-----------------+---------------+----------------------+-------------------------+");
+            System.out.println("| Reservation ID | Guest           | Room Number   | Contact Number      | Reservation Date        |");
+            System.out.println("+----------------+-----------------+---------------+----------------------+-------------------------+");
+
+            while (resultSet.next()) {
+                int reservationId = resultSet.getInt("res_id");
+                String guestName = resultSet.getString("guest_name");
+                int roomNo = resultSet.getInt("room_no");
+                String contactNo = resultSet.getString("contact_no");
+                String reservationDate = resultSet.getTimestamp("reservation_date").toString();
+
+                System.out.printf("| %-14d | %-15s | %-13d | %-20s | %-19s   |\n",
+                        reservationId, guestName, roomNo, contactNo, reservationDate);
+            }
+
+            System.out.println("+----------------+-----------------+---------------+----------------------+-------------------------+");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     public static void getRoomNumber(){
 
