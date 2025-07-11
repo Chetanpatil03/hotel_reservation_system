@@ -16,6 +16,7 @@ public class Main {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
 //            loading the database driver that are com.mysql.cj package
+//            thin, network,native api, jdbc-odbc drivers are present.
         }
         catch (ClassNotFoundException e){
             System.out.println(e.getMessage());
@@ -76,7 +77,7 @@ public class Main {
     public static void reserveRoom(Statement statement,Scanner sc){
         System.out.print("Enter Guest name : ");
         String guestName = sc.next();
-        sc.nextLine();
+        sc.nextLine(); //for new line character
         System.out.println("Enter Room number : ");
         int roomNum = sc.nextInt();
         System.out.println("Enter contact number : ");
@@ -110,13 +111,13 @@ public class Main {
             System.out.println("| Reservation ID | Guest           | Room Number   | Contact Number      | Reservation Date        |");
             System.out.println("+----------------+-----------------+---------------+----------------------+-------------------------+");
 
-            while (resultSet.next()) {
+            while (resultSet.next()) { //check the result set have content or not return true if it has content.
 
                 int reservationId = resultSet.getInt("res_id");
                 String guestName = resultSet.getString("guest_name");
                 int roomNo = resultSet.getInt("room_no");
                 String contactNo = resultSet.getString("contact_no");
-                String reservationDate = resultSet.getTimestamp("reservation_date").toString();
+                String reservationDate = resultSet.getTimestamp("reservation_date").toString(); //timestamp into string.
 
                 System.out.printf("| %-14d | %-15s | %-13d | %-20s | %-19s   |\n",
                         reservationId, guestName, roomNo, contactNo, reservationDate);
@@ -204,7 +205,7 @@ public class Main {
     }
     public static void deleteReservation(Statement statement, Scanner sc){
         try {
-            System.out.print("Enter reservation ID to update : ");
+            System.out.print("Enter reservation ID to Delete : ");
             int reservationID = sc.nextInt();
             sc.nextLine(); //consume new line character
 
