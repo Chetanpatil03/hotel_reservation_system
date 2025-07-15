@@ -67,20 +67,20 @@ HotelReservationSystem/
 ## ▶️ How to Run
 
 1. Clone the repository:
-</pre>
+<pre>
    git clone https://github.com/your-username/HotelReservationSystem.git
    cd HotelReservationSystem
-   </pre>
+</pre>
 
 2. Open the project in IntelliJ IDEA.
-3. Import the hotel_db.sql in MySQL:
+3. Import the `hotel_db.sql` in MySQL:
    
 <pre>
   SOURCE path_to_project/src/Database_schema/hotel_db.sql;
 </pre>
 
 4. Ensure MySQL is running and update DB credentials in Main.java.
-5. Run Main.java to access the reservation system in the console.
+5. Run `Main.java` to access the reservation system in the console.
 
 ## 💡 Example Console Output
 <pre>
